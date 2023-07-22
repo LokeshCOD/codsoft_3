@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+</head>
+
+<body>
+    <div class="calculator">
+        <input type="text" id="result" readonly>
+        <div class="keypad">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendOperator('+')">+</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendOperator('-')">-</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendOperator('*')">*</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="appendOperator('/')">/</button>
+            <button onclick="deleteLast()">Del</button>
+            <button onclick="clearResult()">C</button>
+            <button onclick="appendOperator('.')">.</button>
+        </div>
+    </div>
+
+    <style>
+        .calculator {
+            width: 340px;
+            margin: 170px auto;
+            text-align: center;
+
+        }
+
+        input[type="text"] {
+            width: 89%;
+            padding: 17px;
+            margin-bottom: 7px;
+            background-color: aqua;
+            border-radius: 10px;
+            font-size: 20px;
+
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 3px;
+        }
+
+        button {
+            padding: 12px;
+            background-color: aquamarine;
+            border-radius: 10px;
+            font-size: 20px;
+
+
+        }
+    </style>
+
+    <script>
+        let result = document.getElementById('result');
+
+        function appendNumber(number) {
+            result.value += number;
+        }
+
+        function appendOperator(operator) {
+            result.value += operator;
+        }
+
+        function clearResult() {
+            result.value = '';
+        }
+
+        function deleteLast() {
+            result.value = result.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                result.value = eval(result.value);
+            } catch (error) {
+                result.value = 'Error';
+            }
+        }
+
+        // Function to update the result box with the pressed key
+        function updateResultWithKey(key) {
+            if (!isNaN(key) || key === '.' || key === '+' || key === '-' || key === '*' || key === '/') {
+                // Numbers and operators
+                result.value += key;
+            } else if (key === 'Enter') {
+                // Calculate when Enter key is pressed
+                calculate();
+            } else if (key === 'Backspace') {
+                // Delete last character when Backspace key is pressed
+                deleteLast();
+            }
+        }
+
+        // Event listener for keyboard input
+        document.addEventListener('keydown', (event) => {
+            const keyPressed = event.key;
+            updateResultWithKey(keyPressed);
+
+            // Prevent default behavior for keys that we handle manually
+            if (
+                !isNaN(keyPressed) || // Numbers
+                ['.', '+', '-', '*', '/', 'Enter', 'Backspace'].includes(keyPressed) // Operators and special keys
+            ) {
+                event.preventDefault();
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
